@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
+	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
 
@@ -106,7 +107,8 @@ func RegisterDB() {
 		return
 	} else {
 		fmt.Println("连接数据库成功")
-		// orm.RegisterModel(new(Users), new(MaoShanUser)) // 注册数据表
+		fmt.Println("更新啦！！！！！！！！！！更新必须把更新的表写在最前面，否则不更新")
+		orm.RegisterModel(new(XuanKongUser), new(MessageForMe), new(Users), new(MaoShanUser), new(Statistics))
 	}
 	//关闭数据库
 	defer conn.Close()

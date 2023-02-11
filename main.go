@@ -12,13 +12,13 @@ import (
 func init() {
 	// 注册数据库
 	models.RegisterDB()
+	// 自动建表
+	orm.RunSyncdb("default", false, true)
 }
 
 func main() {
 	//开启调试模式，打印到控制台
 	orm.Debug = true
-	// 自动建表
-	orm.RunSyncdb("default", false, true)
 
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowAllOrigins:  true,
