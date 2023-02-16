@@ -1,0 +1,7 @@
+*.crt
+*.key
+*.exe
+*.exe~
+static/img
+*.mod
+*.sum
