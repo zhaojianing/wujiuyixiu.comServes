@@ -81,25 +81,28 @@ type Article struct { // 文章表
 }
 
 type ArticleComment struct { // 一级评论表
-	Id                    int                  `json:"id"`                       // 评标表id
-	ArticleUid            string               `json:"article_uid"`              // 所属文章uid
-	Uid                   string               `json:"uid"`                      // 评论人uid
-	UidContainer          string               `json:"uid_container"`            // 评论人内容
-	UidLike               int                  `json:"uid_like"`                 // 评论人被点赞数
-	IsArticleCommentReply string               `json:"is_article_comment_reply"` // 是否有二级回复评论
-	Reply                 *ArticleCommentReply `orm:"rel(fk)"`                   // 设置一对多关系(被回复的评论)
-	Date                  int                  `json:"date"`                     // 用户创建时间
+	Id                    int                    `json:"id"`                       // 评标表id
+	ArticleUid            string                 `json:"article_uid"`              // 所属文章uid
+	Uid                   string                 `json:"uid"`                      // 评论人uid
+	UidName               string                 `json:"uid_name"`                 // 评论人名称
+	UidContainer          string                 `json:"uid_container"`            // 评论人内容
+	UidLike               int                    `json:"uid_like"`                 // 评论人被点赞数
+	IsArticleCommentReply string                 `json:"is_article_comment_reply"` // 是否有二级回复评论
+	Reply                 []*ArticleCommentReply `orm:"null;reverse(many)"`        // 设置一对多关系(被回复的评论)
+	Date                  string                 `json:"date"`                     // 用户创建时间
 }
 
 type ArticleCommentReply struct { // 二级回复评论表
-	Id               int    `json:"id"`                 // 评标表id
-	ArticleUid       string `json:"article_uid"`        // 所属文章uid
-	ArticleCommentId int    `json:"article_comment_id"` // 所属一级评论id
-	ReplyUserUid     string `json:"reply-user-uid"`     // 被回复的评论人uid
-	Uid              string `json:"uid"`                // 评论人uid
-	UidContainer     string `json:"uid_container"`      // 评论人内容
-	UidLike          int    `json:"uid_like"`           // 评论人被点赞数
-	Date             int    `json:"date"`               // 用户创建时间
+	Id               int    `json:"id"`                  // 评标表id
+	ArticleUid       string `json:"article_uid"`         // 所属文章uid
+	ArticleCommentId int    `json:"article_comment_id"`  // 所属一级评论id
+	ReplyUserUid     string `json:"reply_user_uid"`      // 被回复的评论人uid
+	ReplyUserUidName string `json:"reply_user_uid_name"` // 被回复的评论人姓名
+	Uid              string `json:"uid"`                 // 评论人uid
+	UidName          string `json:"uid_name"`            // 评论人名称
+	UidContainer     string `json:"uid_container"`       // 评论人内容
+	UidLike          int    `json:"uid_like"`            // 评论人被点赞数
+	Date             string `json:"date"`                // 用户创建时间
 }
 
 func RegisterDB() {

@@ -7,7 +7,7 @@ import (
 )
 
 func InsertArticleCommentReply(articleUid string, replyUserUid string, uid string, uidcontainer string, uidlike int,
-	date int) (id int64, error error) {
+	date string, uidName string, acid int, replyUserUidName string) (id int64, error error) {
 	o := orm.NewOrm()
 	var articleCommentReply models.ArticleCommentReply
 	articleCommentReply.ArticleUid = articleUid
@@ -16,6 +16,9 @@ func InsertArticleCommentReply(articleUid string, replyUserUid string, uid strin
 	articleCommentReply.UidContainer = uidcontainer
 	articleCommentReply.UidLike = uidlike
 	articleCommentReply.Date = date
+	articleCommentReply.UidName = uidName
+	articleCommentReply.ArticleCommentId = acid
+	articleCommentReply.ReplyUserUidName = replyUserUidName
 
 	id, error = o.Insert(&articleCommentReply)
 	if error != nil {
@@ -25,11 +28,12 @@ func InsertArticleCommentReply(articleUid string, replyUserUid string, uid strin
 	return id, error
 }
 
-func GetArticleCommentReply(articleCommentId int, articleUid string, uid string) (data []*models.ArticleCommentReply, error error) {
+func GetArticleCommentReply(articleCommentId int, articleUid string) (data []*models.ArticleCommentReply, error error) {
 	o := orm.NewOrm()
 	var articleCommentReply []*models.ArticleCommentReply
-	_, err := o.QueryTable(&articleCommentReply).Filter("ArticleUid", articleUid).Filter("ArticleCommentId",
-		articleCommentId).Filter("Uid", uid).OrderBy("-uid_like").All(&articleCommentReply)
+	_, err := o.QueryTable("ArticleCommentReply").Filter("ArticleCommentId", articleCommentId).Filter(
+		"ArticleUid", articleUid).All(&articleCommentReply)
+	// .Filter("ReplyUserUid", uid)
 	if err != nil {
 		return nil, err
 	}

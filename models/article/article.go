@@ -55,8 +55,20 @@ func PutArticleWatchNum(num int, id int) (rid int, err error) {
 	article.Id = id
 	article.WatchNumber = num + 1
 
-	println("num + 1", num+1)
 	if num, err := o.Update(&article, "WatchNumber"); err == nil {
+		return int(num), nil
+	}
+	//}
+	return 0, err
+}
+
+func PutArticleCommentNumber(num int, id int) (rid int, err error) {
+	o := orm.NewOrm()
+	var article models.Article
+	article.Id = id
+	article.CommentNumber = num + 1
+
+	if num, err := o.Update(&article, "CommentNumber"); err == nil {
 		return int(num), nil
 	}
 	//}

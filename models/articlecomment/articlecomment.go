@@ -6,17 +6,17 @@ import (
 	"servers/models"
 )
 
-func InsertArticleComment(articleUid string, uid string, uidcontainer string, uidlike int,
-	reply *models.ArticleCommentReply, date int, isArticleCommentReply string) (id int64, error error) {
+func InsertArticleComment(articleUid string, uid string, uidcontainer string, uidlike int, date string, isArticleCommentReply string, uidName string) (id int64, error error) {
 	o := orm.NewOrm()
 	var articleComment models.ArticleComment
 	articleComment.ArticleUid = articleUid
 	articleComment.Uid = uid
 	articleComment.UidContainer = uidcontainer
 	articleComment.UidLike = uidlike
-	articleComment.Reply = reply
+	//articleComment.Reply = reply
 	articleComment.Date = date
 	articleComment.IsArticleCommentReply = isArticleCommentReply
+	articleComment.UidName = uidName
 
 	id, error = o.Insert(&articleComment)
 	if error != nil {
@@ -29,7 +29,8 @@ func InsertArticleComment(articleUid string, uid string, uidcontainer string, ui
 func GetArticleComment(articleUid string) (data []*models.ArticleComment, error error) {
 	o := orm.NewOrm()
 	var articleComment []*models.ArticleComment
-	_, err := o.QueryTable("ArticleComment").OrderBy("-date", "-id").All(&articleComment)
+
+	_, err := o.QueryTable("ArticleComment").Filter("ArticleUid", articleUid).OrderBy("-date", "-id").All(&articleComment)
 	if err != nil {
 		return nil, err
 	}
